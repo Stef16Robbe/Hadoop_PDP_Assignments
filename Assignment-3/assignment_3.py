@@ -30,5 +30,3 @@ dfA.show()
 dfC = df.select("Pclass", "Fare")
 dfC = dfC.groupBy("Pclass").avg("Fare")
 dfC.show()
-
-
