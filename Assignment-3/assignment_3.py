@@ -19,12 +19,17 @@ df = df.withColumn("Survived", df["Survived"].cast(IntegerType())) \
     .withColumn("Parents/Children Aboard", df["Parents/Children Aboard"].cast(IntegerType())) \
     .withColumn("Fare", df["Fare"].cast(FloatType()))
 
-df.show()
-
 # A:
 dfA = df.select("Survived", "Pclass", "Sex")
 dfA = dfA.groupBy("Sex", "Pclass").avg("Survived")
 dfA.show()
+
+# B:
+dfB = df.select("Age", "Pclass", "Survived").toPandas()
+dfB = dfB[(dfB['Age'] <= 10) & (dfB['Pclass'] == 3)][['Age', 'Survived', 'Pclass']]
+survived_y = dfB[dfB['Survived'] == 1].count()[0]
+prob = (survived_y / dfB.count()[0] * 100).item()
+print("probability to survive: " + str(prob))
 
 # C
 dfC = df.select("Pclass", "Fare")
